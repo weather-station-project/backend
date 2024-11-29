@@ -1,0 +1,36 @@
+# On creating a tag:
+#   Create artifact with Docker image
+#   Deploy on PROD
+name: on-tag
+concurrency:
+  group: on-tag
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  build-and-publish-container-image:
+    uses: ingka-group-digital/pmp-cicd/.github/workflows/build_and_publish_to_gcp_artifact_registry.yml@v1
+    with:
+      gcp_workload_identity_provider: projects/714054745516/locations/global/workloadIdentityPools/rx-wif-pool/providers/github-provider
+      gcp_service_account_id: rx-gh-build
+      gcp_project_name: ingka-pmp-rangexplo-cicd
+      repository_name: pmp-rx-backend
+      artifact_name: pmp-rx-backend
+      sha_to_be_built: ${{ github.ref_name }}
+  deploy-on-prod:
+    needs: build-and-publish-container-image
+    uses: ingka-group-digital/pmp-rx-infrastructure/.github/workflows/deploy-service.yml@main
+    with:
+      service-name: pmp_rx_backend
+      image-tag: ${{ github.ref_name }}
+      gcp-workload-identity-provider: projects/295261568810/locations/global/workloadIdentityPools/rx-wif-pool/providers/github-provider
+      gcp-service-account-id: rx-gh-deploy
+      gcp-project-name: ingka-pmp-rangexplo-prod
+      env-name: prod
+      project-name: reside
+    secrets:
+      github-token: ${{ secrets.READ_ONLY_TOKEN }}

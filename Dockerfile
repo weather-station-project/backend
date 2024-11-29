@@ -23,6 +23,6 @@ RUN npm clean-install --ignore-scripts --omit=dev # && npx prisma generate
 RUN chown node:node -R /app
 
 USER node
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["npm", "start:prod"]

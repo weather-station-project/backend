@@ -1,4 +1,6 @@
-FROM arm64v8/node:lts-alpine AS builder
+ARG BUILDPLATFORM
+
+FROM $BUILDPLATFORM/node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -9,7 +11,8 @@ RUN npm clean-install --ignore-scripts && \
     npm run build
 
 
-FROM arm64v8/node:lts-alpine
+ARG BUILDPLATFORM
+FROM $BUILDPLATFORM/node:lts-alpine
 
 WORKDIR /app
 
@@ -23,4 +26,4 @@ RUN chown node:node -R /app
 USER node
 EXPOSE 3000
 
-CMD ["npm", "start:prod"]
+CMD ["npm", "run start:prod"]

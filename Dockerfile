@@ -1,5 +1,4 @@
-FROM node:lts-alpine AS builder
-LABEL maintainer="David Leon <david.leon.m@gmail.com>"
+FROM --platform=$BUILDPLATFORM node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -10,8 +9,7 @@ RUN npm clean-install --ignore-scripts && \
     npm run build
 
 
-FROM node:lts-alpine
-LABEL maintainer="David Leon <david.leon.m@gmail.com>"
+FROM --platform=$BUILDPLATFORM node:lts-alpine
 
 WORKDIR /app
 

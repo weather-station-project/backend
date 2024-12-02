@@ -1,5 +1,4 @@
-ARG BUILDPLATFORM
-FROM $BUILDPLATFORM/node:lts-alpine AS builder
+FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -10,8 +9,8 @@ RUN npm clean-install --ignore-scripts && \
     npm run build
 
 
-ARG BUILDPLATFORM
-FROM $BUILDPLATFORM/node:lts-alpine
+ARG TARGETARCH
+FROM $TARGETARCH/node:lts-alpine
 
 WORKDIR /app
 

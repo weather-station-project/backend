@@ -1,4 +1,5 @@
-FROM node:lts-alpine AS builder
+ARG TARGETARCH
+FROM $TARGETARCH/node:lts-alpine AS builder
 
 WORKDIR /app
 

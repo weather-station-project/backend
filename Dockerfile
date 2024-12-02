@@ -1,6 +1,6 @@
+ARG TARGETOS
 ARG TARGETARCH
-# FROM $TARGETARCH/node:lts-alpine AS builder
-FROM arm64v8/node:lts-alpine AS builder
+FROM $TARGETOS/$TARGETARCH/node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -11,9 +11,9 @@ RUN npm clean-install --ignore-scripts && \
     npm run build
 
 
+ARG TARGETOS
 ARG TARGETARCH
-# FROM $TARGETARCH/node:lts-alpine
-FROM arm64v8/node:lts-alpine
+FROM $TARGETOS/$TARGETARCH/node:lts-alpine
 
 WORKDIR /app
 

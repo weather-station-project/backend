@@ -25,4 +25,4 @@ RUN chown node:node -R /app
 USER node
 EXPOSE 3000
 
-CMD ["npm", "run start:prod"]
+ENTRYPOINT ["npm", "run", "start:prod"]

@@ -1,5 +1,5 @@
 ARG BUILDPLATFORM
-FROM --platform=$BUILDPLATFORM node:lts-alpine
+FROM --platform=$BUILDPLATFORM node:lts-alpine AS builder
 
 WORKDIR /app
 

@@ -1,5 +1,5 @@
 ARG BUILDPLATFORM
-FROM --platform=$BUILDPLATFORM node:lts-alpine AS builder
+FROM $BUILDPLATFORM/node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN npm clean-install --ignore-scripts && \
 
 
 ARG BUILDPLATFORM
-FROM --platform=$BUILDPLATFORM node:lts-alpine
+FROM $BUILDPLATFORM/node:lts-alpine
 
 WORKDIR /app
 

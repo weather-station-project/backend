@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS builder
+FROM --platform=$TARGETPLATFORM node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN npm clean-install --ignore-scripts && \
     npm run build
 
 
-FROM node:lts-alpine
+FROM --platform=$TARGETPLATFORM node:lts-alpine
 
 WORKDIR /app
 

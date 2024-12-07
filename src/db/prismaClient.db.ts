@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import { GlobalConfig } from '../config/global.config'
 
 // https://www.prisma.io/docs/orm/reference/error-reference#error-codes
@@ -43,7 +43,7 @@ function prismaEncodeChars(text: string): string {
   return encodedString.join('')
 }
 
-const defaultLogLevels: string[] = ['error', 'warn']
+const defaultLogLevels: Prisma.LogLevel[] = ['error', 'warn']
 
 const prismaClientSingleton = () => {
   return new PrismaClient({

@@ -1,14 +1,10 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { GlobalConfig } from '../config/global.config'
 
 // https://www.prisma.io/docs/orm/reference/error-reference#error-codes
 export const RECORD_NOT_FOUND_ERROR_CODE = 'P2025'
 export const UNIQUE_KEY_DUPLICATED_ERROR_CODE = 'P2002'
 export const FOREIGN_KEY_VIOLATED_ERROR_CODE = 'P2003'
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
 
 const charsToReplace: Map<string, string> = new Map<string, string>([
   [':', '%3A'],
@@ -47,11 +43,10 @@ function prismaEncodeChars(text: string): string {
   return encodedString.join('')
 }
 
-const defaultLogLevels: Prisma.LogLevel[] = ['error', 'warn']
+const defaultLogLevels: string[] = ['error', 'warn']
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
+const prismaClientSingleton = () => {
+  return new PrismaClient({
     log: GlobalConfig.log.level === 'debug' ? [...defaultLogLevels, 'query', 'info'] : defaultLogLevels,
     errorFormat: GlobalConfig.environment.isProduction ? 'minimal' : 'colorless',
     datasources: {
@@ -72,5 +67,14 @@ export const prisma =
       },
     },
   })
+}
 
-if (!GlobalConfig.environment.isProduction) globalForPrisma.prisma = prisma
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
+
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+
+export default prisma
+
+if (!GlobalConfig.environment.isProduction) globalThis.prismaGlobal = prisma

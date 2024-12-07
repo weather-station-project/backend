@@ -10,61 +10,49 @@ datasource db {
   url      = env("DATABASE_CONNECTION_STRING")
 }
 
-model Store {
-  storeNo    String @id(map: "stores_pkey") @map("store_no") @db.VarChar(10)
-  marketCode String @map("market_code") @db.VarChar(4)
-  name       String @map("name") @db.VarChar(20)
+model AmbientTemperatures {
+  id          BigInt   @id(map: "ambient_temperatures_pkey") @default(autoincrement())
+  temperature Int      @map("temperature") @db.SmallInt
+  dateTime    DateTime @map("date_time") @db.Timestamptz(3)
 
-  Device Device[]
-
-  @@map("stores")
+  @@index([dateTime], map: "ambient_temperatures_date_time_idx")
+  @@map("ambient_temperatures")
 }
 
-model Device {
-  id                      Int     @id(map: "devices_pkey") @default(autoincrement())
-  storeNo                 String  @map("store_no") @db.VarChar(10)
-  deviceId                String  @map("device_id") @db.VarChar(20)
-  type                    String  @map("type") @db.VarChar(10)
-  location                String  @map("location") @db.VarChar(20)
-  pixelSizeMillimeters    Float?  @map("pixel_size_millimeters") @db.Real
-  minimumSideMarginPixels Float?  @map("minimum_side_margin_pixels") @db.Real
-  alignMarginPixels       Float?  @map("align_margin_pixels") @db.Real
-  position                String? @map("position") @db.VarChar(15)
-  layout                  String? @map("layout") @db.VarChar(15)
+model GroundTemperatures {
+  id          BigInt   @id(map: "ground_temperatures_pkey") @default(autoincrement())
+  temperature Int      @map("temperature") @db.SmallInt
+  dateTime    DateTime @map("date_time") @db.Timestamptz(3)
 
-  store          Store            @relation(fields: [storeNo], references: [storeNo], map: "devices_storeno_fkey", onDelete: Cascade, onUpdate: Cascade)
-  DeviceCategory DeviceCategory[]
-
-  @@unique([storeNo, deviceId], map: "devices_storeno_deviceid_key")
-  @@map(name: "devices")
+  @@index([dateTime], map: "ground_temperatures_date_time_idx")
+  @@map("ground_temperatures")
 }
 
-model DeviceCategory {
-  deviceId       Int    @map("device_id") @db.Integer
-  ikeaCategoryId String @map("ikea_category_id") @db.VarChar(10)
+model AirMeasurements {
+  id       BigInt   @id(map: "air_measurements_pkey") @default(autoincrement())
+  humidity Int      @map("humidity") @db.SmallInt
+  pressure Int      @map("pressure") @db.SmallInt
+  dateTime DateTime @map("date_time") @db.Timestamptz(3)
 
-  device Device @relation(fields: [deviceId], references: [id], map: "devicecategories_deviceid_fkey", onDelete: Cascade, onUpdate: Cascade)
-
-  @@id([deviceId, ikeaCategoryId], map: "device_categories_pkey")
-  @@map(name: "device_categories")
+  @@index([dateTime], map: "air_measurements_date_time_idx")
+  @@map("air_measurements")
 }
 
-model ProductExceptions {
-  itemNo            String   @id(map: "product_exceptions_pkey") @map("item_no") @db.VarChar(15)
-  verticalRatio     Float?   @map("vertical_ratio") @db.Real
-  rgb               Int?     @map("rgb") @db.Integer
-  widthPixels       Int?     @map("width_pixels") @db.Integer
-  heightPixels      Int?     @map("height_pixels") @db.Integer
-  hasDarkColors     Boolean? @map("has_dark_colors") @db.Boolean
-  heightCentimeters Float?   @map("height_centimeters") @db.Real
-  noRealSize        Boolean? @map("no_real_size") @db.Boolean
+model WindMeasurements {
+  id        BigInt   @id(map: "wind_measurements_pkey") @default(autoincrement())
+  speed     Int      @map("speed") @db.SmallInt
+  direction String   @map("direction") @db.VarChar(4)
+  dateTime  DateTime @map("date_time") @db.Timestamptz(3)
 
-  @@map(name: "product_exceptions")
+  @@index([dateTime], map: "wind_measurements_date_time_idx")
+  @@map("wind_measurements")
 }
 
-model CategoryExceptions {
-  categoryId String   @id(map: "category_exceptions_pkey") @map("category_id") @db.VarChar(10)
-  noRealSize Boolean? @map("no_real_size") @db.Boolean
+model Rainfall {
+  id       BigInt   @id(map: "rainfall_pkey") @default(autoincrement())
+  amount   Int      @map("amount") @db.SmallInt
+  dateTime DateTime @map("date_time") @db.Timestamptz(3)
 
-  @@map(name: "category_exceptions")
+  @@index([dateTime], map: "rainfall_date_time_idx")
+  @@map("rainfall")
 }

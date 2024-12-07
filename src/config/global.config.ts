@@ -47,7 +47,7 @@ export class Config {
     this.auth = {
       jwtSecret: process.env.JWT_SECRET || '123456',
       jwtExpirationTime: process.env.JWT_EXPIRATION_TIME || '1d',
-      algorithm: 'HS256'
+      algorithm: 'HS256',
     }
     this.log = { level: (process.env.LOG_LEVEL as Level) || 'debug' }
     this.database = {

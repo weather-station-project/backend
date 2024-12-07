@@ -1,15 +1,15 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { AppModule } from './modules/app.module';
-import { ValidationPipe, VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
-import compression from 'compression';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core'
+import { AppModule } from './modules/app.module'
+import { ValidationPipe, VERSION_NEUTRAL, VersioningType } from '@nestjs/common'
+import compression from 'compression'
 import * as zlib from 'zlib'
 import {
   PrismaClientKnownRequestErrorExceptionFilter,
-  PrismaClientUnknownRequestErrorExceptionFilter, PrismaClientValidationErrorExceptionFilter,
-} from './exceptionfilters/prisma.filter';
+  PrismaClientUnknownRequestErrorExceptionFilter,
+  PrismaClientValidationErrorExceptionFilter,
+} from './exceptionfilters/prisma.filter'
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino'
-import { GlobalConfig } from './config/global.config';
-
+import { GlobalConfig } from './config/global.config'
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {

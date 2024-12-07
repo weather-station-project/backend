@@ -10,7 +10,6 @@ import pino from 'pino'
 import { RequestIdStorage } from '../utils/requestStorage.util'
 import LogFn = pino.LogFn
 
-
 interface ILogBinding {
   context: string
   err?: Error
@@ -48,12 +47,12 @@ interface ILogBinding {
         transport: GlobalConfig.environment.isProduction
           ? undefined
           : {
-            target: 'pino-pretty',
-            options: {
-              singleLine: true,
-              colorize: true,
+              target: 'pino-pretty',
+              options: {
+                singleLine: true,
+                colorize: true,
+              },
             },
-          },
         genReqId: (request: IncomingMessage, response: ServerResponse<IncomingMessage>): ReqId => {
           let id: ReqId = request.id ?? request.headers['x-request-id']
           if (!id) {
@@ -71,5 +70,4 @@ interface ILogBinding {
   ],
   providers: [onApplicationBootstrapLogging, onApplicationShutdownLogging],
 })
-
 export class AppModule {}

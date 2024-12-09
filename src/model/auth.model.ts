@@ -20,7 +20,7 @@ export class UserAuthModel {
   password: string
 }
 
-type TUserRole = 'write' | 'read'
+export type TUserRole = 'write' | 'read'
 
 export class UserDto {
   login: string

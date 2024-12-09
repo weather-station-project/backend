@@ -6,7 +6,7 @@ import prisma from '../db/prismaClient.db'
 export class HealthController {
   constructor(
     private readonly prismaHealthIndicator: PrismaHealthIndicator,
-    private readonly healthCheckService: HealthCheckService,
+    private readonly healthCheckService: HealthCheckService
   ) {}
 
   @Get()

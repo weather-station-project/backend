@@ -13,5 +13,4 @@ import { TerminusLogger } from '../utils/terminusLogger.util'
   ],
   controllers: [HealthController],
 })
-
 export class HealthModule {}

@@ -70,7 +70,7 @@ interface ILogBinding {
     }),
     ConfigModule.forRoot({ cache: true, isGlobal: true }),
     AuthModule,
-    HealthModule
+    HealthModule,
   ],
   providers: [onApplicationBootstrapLogging, onApplicationShutdownLogging],
 })

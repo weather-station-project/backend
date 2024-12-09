@@ -14,6 +14,7 @@ interface IAuthConfig {
   jwtSecret: string
   jwtExpirationTime: string
   algorithm: Algorithm
+  hashSaltRounds: number
 }
 
 interface ILogConfig {
@@ -48,6 +49,7 @@ export class Config {
       jwtSecret: process.env.JWT_SECRET || '123456',
       jwtExpirationTime: process.env.JWT_EXPIRATION_TIME || '1d',
       algorithm: 'HS256',
+      hashSaltRounds: 10,
     }
     this.log = { level: (process.env.LOG_LEVEL as Level) || 'debug' }
     this.database = {

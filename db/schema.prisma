@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_CONNECTION_STRING")
 }
 
-model AmbientTemperatures {
+model AmbientTemperature {
   id          BigInt   @id(map: "ambient_temperatures_pkey") @default(autoincrement())
   temperature Int      @map("temperature") @db.SmallInt
   dateTime    DateTime @map("date_time") @db.Timestamptz(3)
@@ -19,7 +19,7 @@ model AmbientTemperatures {
   @@map("ambient_temperatures")
 }
 
-model GroundTemperatures {
+model GroundTemperature {
   id          BigInt   @id(map: "ground_temperatures_pkey") @default(autoincrement())
   temperature Int      @map("temperature") @db.SmallInt
   dateTime    DateTime @map("date_time") @db.Timestamptz(3)
@@ -28,7 +28,7 @@ model GroundTemperatures {
   @@map("ground_temperatures")
 }
 
-model AirMeasurements {
+model AirMeasurement {
   id       BigInt   @id(map: "air_measurements_pkey") @default(autoincrement())
   humidity Int      @map("humidity") @db.SmallInt
   pressure Int      @map("pressure") @db.SmallInt
@@ -38,7 +38,7 @@ model AirMeasurements {
   @@map("air_measurements")
 }
 
-model WindMeasurements {
+model WindMeasurement {
   id        BigInt   @id(map: "wind_measurements_pkey") @default(autoincrement())
   speed     Int      @map("speed") @db.SmallInt
   direction String   @map("direction") @db.VarChar(4)
@@ -55,4 +55,12 @@ model Rainfall {
 
   @@index([dateTime], map: "rainfall_date_time_idx")
   @@map("rainfall")
+}
+
+model User {
+  login    String @id(map: "users_pkey") @db.VarChar(20)
+  password String @map("password") @db.VarChar(200)
+  role     String @map("direction") @db.VarChar(5)
+
+  @@map("users")
 }

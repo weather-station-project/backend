@@ -1,7 +1,7 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { AppModule } from './modules/app.module'
 import { ValidationPipe, VERSION_NEUTRAL, VersioningType } from '@nestjs/common'
-import compression from 'compression'
+import * as compression from 'compression'
 import * as zlib from 'zlib'
 import {
   PrismaClientKnownRequestErrorExceptionFilter,

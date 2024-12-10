@@ -5,7 +5,7 @@ import { Strategy } from 'passport-custom'
 import { Request } from 'express'
 import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
-import { UserAuthModel } from '../model/auth.model'
+import { UserAuthRequestModel } from '../model/auth.model'
 
 @Injectable()
 export class CustomStrategy extends PassportStrategy(Strategy, 'custom') {
@@ -14,7 +14,7 @@ export class CustomStrategy extends PassportStrategy(Strategy, 'custom') {
   }
 
   async validate(req: Request): Promise<boolean> {
-    const validationErrors: ValidationError[] = await validate(plainToInstance(UserAuthModel, req.body))
+    const validationErrors: ValidationError[] = await validate(plainToInstance(UserAuthRequestModel, req.body))
 
     if (validationErrors.length > 0) {
       throw new BadRequestException(validationErrors.map((item: ValidationError) => item.constraints))

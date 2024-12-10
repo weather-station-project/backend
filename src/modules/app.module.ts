@@ -11,6 +11,7 @@ import { RequestIdStorage } from '../utils/requestStorage.util'
 import LogFn = pino.LogFn
 import { AuthModule } from './auth.module'
 import { HealthModule } from './health.module'
+import { MeasurementsModule } from './measurements.module'
 
 interface ILogBinding {
   context: string
@@ -71,6 +72,7 @@ interface ILogBinding {
     ConfigModule.forRoot({ cache: true, isGlobal: true }),
     AuthModule,
     HealthModule,
+    MeasurementsModule,
   ],
   providers: [onApplicationBootstrapLogging, onApplicationShutdownLogging],
 })

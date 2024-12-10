@@ -1,8 +1,6 @@
 import { Length } from 'class-validator'
 import { User } from '@prisma/client'
 
-// https://github.com/typestack/class-validator#validation-decorators
-
 export interface IToken {
   access_token: string
 }
@@ -12,7 +10,7 @@ export interface ITokenPayload {
   user: UserDto
 }
 
-export class UserAuthModel {
+export class UserAuthRequestModel {
   @Length(1, 20)
   login: string
 
@@ -20,16 +18,19 @@ export class UserAuthModel {
   password: string
 }
 
-export type TUserRole = 'write' | 'read'
+export enum Role {
+  Read = 'read',
+  Write = 'write',
+}
 
 export class UserDto {
   login: string
-  role: TUserRole
+  role: Role
 
   public static fromEntity(entity: User): UserDto {
     return {
       login: entity.login,
-      role: entity.role as TUserRole,
+      role: entity.role as Role,
     }
   }
 }

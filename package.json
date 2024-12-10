@@ -21,7 +21,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
     "test:e2e": "jest --config tests/jest-e2e.json",
-    "prepare": "husky install && bash -c 'chmod ug+x .husky/*'"
+    "prepare": "husky && bash -c 'chmod ug+x .husky/*'"
   },
   "engines": {
     "npm": ">=8.0.0",

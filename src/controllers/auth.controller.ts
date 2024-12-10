@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common'
 import { AuthService } from '../services/auth.service'
 import { CustomAuthGuard } from '../guards/custom-auth.guard'
-import { IToken, UserAuthModel, UserDto } from '../model/auth.model'
+import { IToken, UserAuthRequestModel, UserDto } from '../model/auth.model'
 import * as bcrypt from 'bcrypt'
 
 @Controller({ path: 'auth', version: VERSION_NEUTRAL })
@@ -23,7 +23,7 @@ export class AuthController {
   @UseGuards(CustomAuthGuard)
   @Post()
   @HttpCode(200)
-  async userAuth(@Body() body: UserAuthModel): Promise<IToken> {
+  async userAuth(@Body() body: UserAuthRequestModel): Promise<IToken> {
     this.logger.log(`Request userAuth with user '${body.login}'`)
 
     const entity = await this.authService.getUserByLogin(body.login)

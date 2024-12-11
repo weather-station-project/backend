@@ -23,10 +23,13 @@ main()
   })
 
 async function main(): Promise<void> {
-  await prisma.$transaction(async (tx: Prisma.TransactionClient): Promise<void> => {
-    await setUsers(tx)
-    await setMeasurements(tx)
-  })
+  await prisma.$transaction(
+    async (tx: Prisma.TransactionClient): Promise<void> => {
+      await setUsers(tx)
+      await setMeasurements(tx)
+    },
+    { maxWait: 10000, timeout: 900000 }
+  )
 }
 
 async function setUsers(tx: Prisma.TransactionClient): Promise<void> {

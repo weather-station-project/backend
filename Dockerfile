@@ -4,8 +4,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm clean-install --ignore-scripts && \
-    # npx prisma generate && \
+RUN apk add --no-cache openssl && \
+    npm clean-install --ignore-scripts && \
+    npx prisma generate && \
     npm run build
 
 
@@ -15,12 +16,15 @@ WORKDIR /app
 
 COPY --from=builder /app/dist/ .
 COPY package*.json ./
-# COPY --from=builder /app/db/schema.prisma ./db/
+COPY --from=builder /app/db/schema.prisma ./db/
 
-RUN npm clean-install --ignore-scripts --omit=dev # && npx prisma generate
+RUN apk add --no-cache openssl && \
+    npm clean-install --ignore-scripts --omit=dev && \
+    npx prisma generate
+
 RUN chown node:node -R /app
 
 USER node
-EXPOSE 3000
+EXPOSE 8080
 
 ENTRYPOINT ["npm", "run", "start:prod"]

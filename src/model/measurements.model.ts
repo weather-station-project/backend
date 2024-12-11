@@ -1,4 +1,4 @@
-import { isDate, registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator'
+import { isDate, IsEnum, IsNumber, registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator'
 import { Type } from 'class-transformer'
 
 export enum WindDirection {
@@ -54,35 +54,46 @@ function IsValidDateInThePast(validationOptions?: ValidationOptions) {
 }
 
 export interface IMeasurements {
-  ambientTemperatures: IAmbientTemperature[]
-  groundTemperatures: IGroundTemperature[]
-  airMeasurements: IAirMeasurement[]
-  windMeasurements: IWindMeasurement[]
-  rainfalls: IRainfall[]
+  ambientTemperatures: AmbientTemperatureDto[]
+  groundTemperatures: GroundTemperatureDto[]
+  airMeasurements: AirMeasurementDto[]
+  windMeasurements: WindMeasurementDto[]
+  rainfalls: RainfallDto[]
 }
 
-interface IMeasurement {
+class MeasurementDto {
+  @IsValidDateInThePast()
+  @Type(() => Date)
   dateTime: Date
 }
 
-export interface IAmbientTemperature extends IMeasurement {
+export class AmbientTemperatureDto extends MeasurementDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   temperature: number
 }
 
-export interface IGroundTemperature extends IMeasurement {
+export class GroundTemperatureDto extends MeasurementDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   temperature: number
 }
 
-export interface IAirMeasurement extends IMeasurement {
+export class AirMeasurementDto extends MeasurementDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   humidity: number
+
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   pressure: number
 }
 
-export interface IWindMeasurement extends IMeasurement {
+export class WindMeasurementDto extends MeasurementDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   speed: number
+
+  @IsEnum(WindDirection)
   direction: WindDirection
 }
 
-export interface IRainfall extends IMeasurement {
+export class RainfallDto extends MeasurementDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   amount: number
 }

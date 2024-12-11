@@ -1,9 +1,18 @@
-import { Controller, Get, Logger, Query, UseGuards, VERSION_NEUTRAL } from '@nestjs/common'
+import { Body, Controller, Get, Logger, Post, Query, UseGuards, VERSION_NEUTRAL } from '@nestjs/common'
 import { Roles } from '../decorators/roles.decorator'
 import { Role, UserDto } from '../model/auth.model'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
-import { IMeasurements, MeasurementsRequestModel, WindDirection } from '../model/measurements.model'
+import {
+  AirMeasurementDto,
+  AmbientTemperatureDto,
+  GroundTemperatureDto,
+  IMeasurements,
+  MeasurementsRequestModel,
+  RainfallDto,
+  WindDirection,
+  WindMeasurementDto,
+} from '../model/measurements.model'
 import { UserDecorator } from '../decorators/user.decorator'
 import { MeasurementsService } from '../services/measurements.service'
 
@@ -49,5 +58,52 @@ export class MeasurementsController {
         return { dateTime: record.dateTime, amount: record.amount }
       }),
     }
+  }
+
+  @Roles(Role.Write)
+  @Post('ambient-temperature')
+  async addAmbientTemperature(
+    @Body() measurement: AmbientTemperatureDto,
+    @UserDecorator() userFromHeaders: UserDto
+  ): Promise<void> {
+    this.logger.log(`Request addAmbientTemperature by the user '${userFromHeaders.login}`)
+    await this.measurementsService.addAmbientTemperature(measurement)
+  }
+
+  @Roles(Role.Write)
+  @Post('ground-temperature')
+  async addGroundTemperature(
+    @Body() measurement: GroundTemperatureDto,
+    @UserDecorator() userFromHeaders: UserDto
+  ): Promise<void> {
+    this.logger.log(`Request addGroundTemperature by the user '${userFromHeaders.login}`)
+    await this.measurementsService.addGroundTemperature(measurement)
+  }
+
+  @Roles(Role.Write)
+  @Post('air-measurement')
+  async addAirMeasurement(
+    @Body() measurement: AirMeasurementDto,
+    @UserDecorator() userFromHeaders: UserDto
+  ): Promise<void> {
+    this.logger.log(`Request addAirMeasurement by the user '${userFromHeaders.login}`)
+    await this.measurementsService.addAirMeasurement(measurement)
+  }
+
+  @Roles(Role.Write)
+  @Post('wind-measurement')
+  async addWindMeasurement(
+    @Body() measurement: WindMeasurementDto,
+    @UserDecorator() userFromHeaders: UserDto
+  ): Promise<void> {
+    this.logger.log(`Request addWindMeasurement by the user '${userFromHeaders.login}`)
+    await this.measurementsService.addWindMeasurement(measurement)
+  }
+
+  @Roles(Role.Write)
+  @Post('rainfall')
+  async addRainfall(@Body() measurement: RainfallDto, @UserDecorator() userFromHeaders: UserDto): Promise<void> {
+    this.logger.log(`Request addRainfall by the user '${userFromHeaders.login}`)
+    await this.measurementsService.addRainfall(measurement)
   }
 }

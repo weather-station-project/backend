@@ -60,7 +60,7 @@ model Rainfall {
 model User {
   login    String @id(map: "users_pkey") @db.VarChar(20)
   password String @map("password") @db.VarChar(200)
-  role     String @map("direction") @db.VarChar(5)
+  role     String @map("role") @db.VarChar(5)
 
   @@map("users")
 }

@@ -12,7 +12,7 @@ import {
 import { AuthService } from '../services/auth.service'
 import { CustomAuthGuard } from '../guards/custom-auth.guard'
 import { IToken, UserAuthRequestModel, UserDto } from '../model/auth.model'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 @Controller({ path: 'auth', version: VERSION_NEUTRAL })
 export class AuthController {

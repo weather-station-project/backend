@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common'
 import { GlobalConfig } from '../src/config/global.config'
 import { Prisma } from '@prisma/client'
 import prisma from '../src/db/prismaClient.db'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import { Role } from '../src/model/auth.model'
 import { WindDirection } from '../src/model/measurements.model'
 

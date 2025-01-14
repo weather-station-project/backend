@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM node:lts-alpine AS builder
+FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN apk add --no-cache openssl && \
     npm run build
 
 
-FROM --platform=$TARGETPLATFORM node:lts-alpine
+FROM node:lts-alpine
 
 WORKDIR /app
 

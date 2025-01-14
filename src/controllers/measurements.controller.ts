@@ -23,7 +23,7 @@ export class MeasurementsController {
 
   constructor(private readonly measurementsService: MeasurementsService) {}
 
-  @Roles(Role.Read)
+  @Roles(Role.Read, Role.Write)
   @Get()
   async getMeasurements(
     @Query() query: MeasurementsRequestModel,

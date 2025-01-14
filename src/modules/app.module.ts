@@ -47,15 +47,13 @@ interface ILogBinding {
           },
         },
         customAttributeKeys: { req: 'httpRequest', res: 'httpResponse' },
-        transport: GlobalConfig.environment.isProduction
-          ? undefined
-          : {
-              target: 'pino-pretty',
-              options: {
-                singleLine: true,
-                colorize: true,
-              },
-            },
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            singleLine: true,
+            colorize: true,
+          },
+        },
         genReqId: (request: IncomingMessage, response: ServerResponse<IncomingMessage>): ReqId => {
           let id: ReqId = request.id ?? request.headers['x-request-id']
           if (!id) {

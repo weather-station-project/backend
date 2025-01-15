@@ -13,7 +13,7 @@ datasource db {
 model AmbientTemperature {
   id          BigInt   @id(map: "ambient_temperatures_pkey") @default(autoincrement())
   temperature Int      @map("temperature") @db.SmallInt
-  dateTime    DateTime @map("date_time") @db.Timestamptz(3)
+  dateTime    DateTime @map("date_time") @db.Timestamptz(0)
 
   @@index([dateTime], map: "ambient_temperatures_date_time_idx")
   @@map("ambient_temperatures")
@@ -22,7 +22,7 @@ model AmbientTemperature {
 model GroundTemperature {
   id          BigInt   @id(map: "ground_temperatures_pkey") @default(autoincrement())
   temperature Int      @map("temperature") @db.SmallInt
-  dateTime    DateTime @map("date_time") @db.Timestamptz(3)
+  dateTime    DateTime @map("date_time") @db.Timestamptz(0)
 
   @@index([dateTime], map: "ground_temperatures_date_time_idx")
   @@map("ground_temperatures")
@@ -32,7 +32,7 @@ model AirMeasurement {
   id       BigInt   @id(map: "air_measurements_pkey") @default(autoincrement())
   humidity Int      @map("humidity") @db.SmallInt
   pressure Int      @map("pressure") @db.SmallInt
-  dateTime DateTime @map("date_time") @db.Timestamptz(3)
+  dateTime DateTime @map("date_time") @db.Timestamptz(0)
 
   @@index([dateTime], map: "air_measurements_date_time_idx")
   @@map("air_measurements")
@@ -42,7 +42,7 @@ model WindMeasurement {
   id        BigInt   @id(map: "wind_measurements_pkey") @default(autoincrement())
   speed     Int      @map("speed") @db.SmallInt
   direction String   @map("direction") @db.VarChar(4)
-  dateTime  DateTime @map("date_time") @db.Timestamptz(3)
+  dateTime  DateTime @map("date_time") @db.Timestamptz(0)
 
   @@index([dateTime], map: "wind_measurements_date_time_idx")
   @@map("wind_measurements")
@@ -51,7 +51,7 @@ model WindMeasurement {
 model Rainfall {
   id       BigInt   @id(map: "rainfall_pkey") @default(autoincrement())
   amount   Int      @map("amount") @db.SmallInt
-  dateTime DateTime @map("date_time") @db.Timestamptz(3)
+  dateTime DateTime @map("date_time") @db.Timestamptz(0)
 
   @@index([dateTime], map: "rainfall_date_time_idx")
   @@map("rainfall")

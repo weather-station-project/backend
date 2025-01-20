@@ -1,18 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { AirMeasurement, AmbientTemperature, GroundTemperature, Rainfall, WindMeasurement } from '@prisma/client'
+import { AirMeasurement, GroundTemperature, Rainfall, WindMeasurement } from '@prisma/client'
 import prisma from '../db/prismaClient.db'
-import {
-  AirMeasurementDto,
-  AmbientTemperatureDto,
-  GroundTemperatureDto,
-  RainfallDto,
-  WindMeasurementDto,
-} from '../model/measurements.model'
+import { AirMeasurementDto, GroundTemperatureDto, RainfallDto, WindMeasurementDto } from '../model/measurements.model'
 
 @Injectable()
 export class MeasurementsService {
-  async getAmbientTemperatures(fromDate: Date, toDate: Date): Promise<AmbientTemperature[]> {
-    return prisma.ambientTemperature.findMany({
+  async getAirMeasurements(fromDate: Date, toDate: Date): Promise<AirMeasurement[]> {
+    return prisma.airMeasurement.findMany({
       where: { dateTime: { gte: fromDate, lte: toDate } },
       orderBy: { dateTime: 'desc' },
     })
@@ -20,13 +14,6 @@ export class MeasurementsService {
 
   async getGroundTemperatures(fromDate: Date, toDate: Date): Promise<GroundTemperature[]> {
     return prisma.groundTemperature.findMany({
-      where: { dateTime: { gte: fromDate, lte: toDate } },
-      orderBy: { dateTime: 'desc' },
-    })
-  }
-
-  async getAirMeasurements(fromDate: Date, toDate: Date): Promise<AirMeasurement[]> {
-    return prisma.airMeasurement.findMany({
       where: { dateTime: { gte: fromDate, lte: toDate } },
       orderBy: { dateTime: 'desc' },
     })
@@ -46,21 +33,20 @@ export class MeasurementsService {
     })
   }
 
-  async addAmbientTemperature(ambientTemperature: AmbientTemperatureDto): Promise<void> {
-    await prisma.ambientTemperature.create({
-      data: { temperature: ambientTemperature.temperature, dateTime: ambientTemperature.dateTime },
+  async addAirMeasurement(airMeasurement: AirMeasurementDto): Promise<void> {
+    await prisma.airMeasurement.create({
+      data: {
+        temperature: airMeasurement.temperature,
+        humidity: airMeasurement.humidity,
+        pressure: airMeasurement.pressure,
+        dateTime: airMeasurement.dateTime,
+      },
     })
   }
 
   async addGroundTemperature(groundTemperature: GroundTemperatureDto): Promise<void> {
     await prisma.groundTemperature.create({
       data: { temperature: groundTemperature.temperature, dateTime: groundTemperature.dateTime },
-    })
-  }
-
-  async addAirMeasurement(airMeasurement: AirMeasurementDto): Promise<void> {
-    await prisma.airMeasurement.create({
-      data: { humidity: airMeasurement.humidity, pressure: airMeasurement.pressure, dateTime: airMeasurement.dateTime },
     })
   }
 

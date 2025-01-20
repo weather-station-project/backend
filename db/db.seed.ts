@@ -33,23 +33,23 @@ async function main(): Promise<void> {
 }
 
 async function setUsers(tx: Prisma.TransactionClient): Promise<void> {
-  const passwordHashed: string = await bcrypt.hash('123456', GlobalConfig.auth.hashSaltRounds)
+  const passwordHashed: string = await bcrypt.hash(GlobalConfig.database.password, GlobalConfig.auth.hashSaltRounds)
 
   await tx.user.create({ data: { login: 'dashboard', password: passwordHashed, role: Role.Read } })
   await tx.user.create({ data: { login: 'sensors', password: passwordHashed, role: Role.Write } })
 }
 
 async function setMeasurements(tx: Prisma.TransactionClient): Promise<void> {
-  const oneYearAgo = new Date()
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
+  const oneMonthAgo = new Date()
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
 
-  const intervals: Date[] = getDateIntervals(oneYearAgo, new Date(), 5)
+  const intervals: Date[] = getDateIntervals(oneMonthAgo, new Date(), 5)
   for (const interval of intervals) {
-    await tx.ambientTemperature.create({ data: { dateTime: interval, temperature: getRandomBetween(-5, 40) } })
     await tx.groundTemperature.create({ data: { dateTime: interval, temperature: getRandomBetween(-5, 40) } })
     await tx.airMeasurement.create({
       data: {
         dateTime: interval,
+        temperature: getRandomBetween(-5, 40),
         humidity: getRandomBetween(10, 100),
         pressure: getRandomBetween(900, 1100),
       },

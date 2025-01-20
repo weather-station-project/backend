@@ -54,9 +54,8 @@ function IsValidDateInThePast(validationOptions?: ValidationOptions) {
 }
 
 export interface IMeasurements {
-  ambientTemperatures: AmbientTemperatureDto[]
-  groundTemperatures: GroundTemperatureDto[]
   airMeasurements: AirMeasurementDto[]
+  groundTemperatures: GroundTemperatureDto[]
   windMeasurements: WindMeasurementDto[]
   rainfalls: RainfallDto[]
 }
@@ -67,17 +66,15 @@ class MeasurementDto {
   dateTime: Date
 }
 
-export class AmbientTemperatureDto extends MeasurementDto {
-  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
-  temperature: number
-}
-
 export class GroundTemperatureDto extends MeasurementDto {
   @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   temperature: number
 }
 
 export class AirMeasurementDto extends MeasurementDto {
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
+  temperature: number
+
   @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 0 })
   humidity: number
 

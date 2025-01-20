@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { RolesGuard } from '../guards/roles.guard'
 import {
   AirMeasurementDto,
-  AmbientTemperatureDto,
   GroundTemperatureDto,
   IMeasurements,
   MeasurementsRequestModel,
@@ -33,23 +32,24 @@ export class MeasurementsController {
       `Request getMeasurements by the user '${userFromHeaders.login}' from date '${query.fromDate}' to date '${query.toDate}'`
     )
 
-    const [ambientTemperatures, groundTemperatures, airMeasurements, windMeasurements, rainfalls] = await Promise.all([
-      this.measurementsService.getAmbientTemperatures(query.fromDate, query.toDate),
-      this.measurementsService.getGroundTemperatures(query.fromDate, query.toDate),
+    const [airMeasurements, groundTemperatures, windMeasurements, rainfalls] = await Promise.all([
       this.measurementsService.getAirMeasurements(query.fromDate, query.toDate),
+      this.measurementsService.getGroundTemperatures(query.fromDate, query.toDate),
       this.measurementsService.getWindMeasurements(query.fromDate, query.toDate),
       this.measurementsService.getRainfalls(query.fromDate, query.toDate),
     ])
 
     return {
-      ambientTemperatures: ambientTemperatures.map((record) => {
-        return { dateTime: record.dateTime, temperature: record.temperature }
+      airMeasurements: airMeasurements.map((record) => {
+        return {
+          dateTime: record.dateTime,
+          temperature: record.temperature,
+          humidity: record.humidity,
+          pressure: record.pressure,
+        }
       }),
       groundTemperatures: groundTemperatures.map((record) => {
         return { dateTime: record.dateTime, temperature: record.temperature }
-      }),
-      airMeasurements: airMeasurements.map((record) => {
-        return { dateTime: record.dateTime, humidity: record.humidity, pressure: record.pressure }
       }),
       windMeasurements: windMeasurements.map((record) => {
         return { dateTime: record.dateTime, speed: record.speed, direction: record.direction as WindDirection }
@@ -61,13 +61,13 @@ export class MeasurementsController {
   }
 
   @Roles(Role.Write)
-  @Post('ambient-temperature')
-  async addAmbientTemperature(
-    @Body() measurement: AmbientTemperatureDto,
+  @Post('air-measurement')
+  async addAirMeasurement(
+    @Body() measurement: AirMeasurementDto,
     @UserDecorator() userFromHeaders: UserDto
   ): Promise<void> {
-    this.logger.log(`Request addAmbientTemperature by the user '${userFromHeaders.login}`)
-    await this.measurementsService.addAmbientTemperature(measurement)
+    this.logger.log(`Request addAirMeasurement by the user '${userFromHeaders.login}`)
+    await this.measurementsService.addAirMeasurement(measurement)
   }
 
   @Roles(Role.Write)
@@ -78,16 +78,6 @@ export class MeasurementsController {
   ): Promise<void> {
     this.logger.log(`Request addGroundTemperature by the user '${userFromHeaders.login}`)
     await this.measurementsService.addGroundTemperature(measurement)
-  }
-
-  @Roles(Role.Write)
-  @Post('air-measurement')
-  async addAirMeasurement(
-    @Body() measurement: AirMeasurementDto,
-    @UserDecorator() userFromHeaders: UserDto
-  ): Promise<void> {
-    this.logger.log(`Request addAirMeasurement by the user '${userFromHeaders.login}`)
-    await this.measurementsService.addAirMeasurement(measurement)
   }
 
   @Roles(Role.Write)

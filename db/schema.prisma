@@ -10,13 +10,15 @@ datasource db {
   url      = env("DATABASE_CONNECTION_STRING")
 }
 
-model AmbientTemperature {
-  id          BigInt   @id(map: "ambient_temperatures_pkey") @default(autoincrement())
+model AirMeasurement {
+  id          BigInt   @id(map: "air_measurements_pkey") @default(autoincrement())
   temperature Int      @map("temperature") @db.SmallInt
+  humidity    Int      @map("humidity") @db.SmallInt
+  pressure    Int      @map("pressure") @db.SmallInt
   dateTime    DateTime @map("date_time") @db.Timestamptz(0)
 
-  @@index([dateTime], map: "ambient_temperatures_date_time_idx")
-  @@map("ambient_temperatures")
+  @@index([dateTime], map: "air_measurements_date_time_idx")
+  @@map("air_measurements")
 }
 
 model GroundTemperature {
@@ -26,16 +28,6 @@ model GroundTemperature {
 
   @@index([dateTime], map: "ground_temperatures_date_time_idx")
   @@map("ground_temperatures")
-}
-
-model AirMeasurement {
-  id       BigInt   @id(map: "air_measurements_pkey") @default(autoincrement())
-  humidity Int      @map("humidity") @db.SmallInt
-  pressure Int      @map("pressure") @db.SmallInt
-  dateTime DateTime @map("date_time") @db.Timestamptz(0)
-
-  @@index([dateTime], map: "air_measurements_date_time_idx")
-  @@map("air_measurements")
 }
 
 model WindMeasurement {

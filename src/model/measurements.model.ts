@@ -43,7 +43,7 @@ function IsValidDateInThePast(validationOptions?: ValidationOptions) {
             return false
           }
 
-          return value < new Date()
+          return value <= new Date()
         },
         defaultMessage(args: ValidationArguments): string {
           return `${args.property} is not a valid datetime in the past`

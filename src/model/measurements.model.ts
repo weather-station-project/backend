@@ -18,6 +18,7 @@ export enum WindDirection {
   WNW = 'W-NW',
   NW = 'N-W',
   NNW = 'N-NW',
+  UNKNOWN = '-',
 }
 
 export class MeasurementsRequestModel {

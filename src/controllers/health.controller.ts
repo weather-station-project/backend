@@ -2,7 +2,7 @@ import { HealthCheck, HealthCheckResult, HealthCheckService, PrismaHealthIndicat
 import { Controller, Get, VERSION_NEUTRAL } from '@nestjs/common'
 import prisma from '../db/prismaClient.db'
 
-@Controller({ path: 'health', version: VERSION_NEUTRAL })
+@Controller({ path: 'api/health', version: VERSION_NEUTRAL })
 export class HealthController {
   constructor(
     private readonly prismaHealthIndicator: PrismaHealthIndicator,

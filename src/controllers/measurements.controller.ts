@@ -16,7 +16,7 @@ import { UserDecorator } from '../decorators/user.decorator'
 import { MeasurementsService } from '../services/measurements.service'
 
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Controller({ path: 'measurements', version: VERSION_NEUTRAL })
+@Controller({ path: 'api/measurements', version: VERSION_NEUTRAL })
 export class MeasurementsController {
   private readonly logger: Logger = new Logger(MeasurementsController.name)
 

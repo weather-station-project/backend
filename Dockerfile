@@ -25,6 +25,6 @@ RUN apk add --no-cache openssl && \
 RUN chown node:node -R /app
 
 USER node
-EXPOSE 8080
+EXPOSE 8443
 
 ENTRYPOINT ["npm", "run", "start:prod"]

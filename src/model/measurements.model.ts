@@ -1,4 +1,12 @@
-import { isDate, IsEnum, IsNumber, registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator'
+import {
+  IsBooleanString,
+  isDate,
+  IsEnum,
+  IsNumber,
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator'
 import { Type } from 'class-transformer'
 
 export enum WindDirection {
@@ -21,14 +29,30 @@ export enum WindDirection {
   UNKNOWN = '-',
 }
 
+export enum Grouping {
+  None = '-',
+  Hourly = 'hourly',
+  Daily = 'daily',
+  Monthly = 'monthly',
+}
+
 export class MeasurementsRequestModel {
   @IsValidDateInThePast()
-  @Type(() => Date)
+  @Type((): DateConstructor => Date)
   fromDate: Date
 
   @IsValidDateInThePast()
-  @Type(() => Date)
+  @Type((): DateConstructor => Date)
   toDate: Date
+
+  @IsEnum(Grouping)
+  grouping: Grouping
+
+  @IsBooleanString()
+  includeSummary: string
+
+  @IsBooleanString()
+  includeMeasurements: string
 }
 
 function IsValidDateInThePast(validationOptions?: ValidationOptions) {
@@ -55,13 +79,61 @@ function IsValidDateInThePast(validationOptions?: ValidationOptions) {
 }
 
 export interface IMeasurements {
-  airMeasurements: AirMeasurementDto[]
-  groundTemperatures: GroundTemperatureDto[]
-  windMeasurements: WindMeasurementDto[]
-  rainfalls: RainfallDto[]
+  airMeasurements: IAirMeasurements
+  groundTemperatures: IGroundTemperatures
+  windMeasurements: IWindMeasurements
+  rainfalls: IRainfalls
 }
 
-class MeasurementDto {
+interface ISummaryDto {
+  key: string
+}
+
+interface IAirMeasurements {
+  items?: AirMeasurementDto[]
+  summary?: (ISummaryDto & {
+    maxTemperature: number
+    avgTemperature: number
+    minTemperature: number
+
+    maxPressure: number
+    avgPressure: number
+    minPressure: number
+
+    maxHumidity: number
+    avgHumidity: number
+    minHumidity: number
+  })[]
+}
+
+interface IGroundTemperatures {
+  items?: GroundTemperatureDto[]
+  summary?: (ISummaryDto & {
+    maxTemperature: number
+    avgTemperature: number
+    minTemperature: number
+  })[]
+}
+
+interface IWindMeasurements {
+  items?: WindMeasurementDto[]
+  summary?: (ISummaryDto & {
+    avgSpeed: number
+    maxGust: number
+    predominantDirection: WindDirection
+  })[]
+}
+
+interface IRainfalls {
+  items?: RainfallDto[]
+  summary?: (ISummaryDto & {
+    maxAmount: number
+    avgAmount: number
+    minAmount: number
+  })[]
+}
+
+export class MeasurementDto {
   @IsValidDateInThePast()
   @Type(() => Date)
   dateTime: Date

@@ -8,6 +8,8 @@ interface IEnvironmentConfig {
 
 interface IServerConfig {
   serverPort: number
+  keyFile: string
+  certFile: string
 }
 
 interface IAuthConfig {
@@ -44,6 +46,8 @@ export class Config {
     }
     this.server = {
       serverPort: parseInt(process.env.PORT, 10) || 8080,
+      keyFile: process.env.KEY_FILE,
+      certFile: process.env.CERT_FILE,
     }
     this.auth = {
       jwtSecret: process.env.JWT_SECRET || '123456',

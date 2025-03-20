@@ -10,10 +10,19 @@ import {
 } from './exceptionfilters/prisma.filter'
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino'
 import { GlobalConfig } from './config/global.config'
+import * as fs from 'node:fs'
+import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface'
 
 async function bootstrap(): Promise<void> {
+  const httpsOptions: HttpsOptions = GlobalConfig.environment.isProduction
+    ? {
+        key: fs.readFileSync(GlobalConfig.server.keyFile),
+        cert: fs.readFileSync(GlobalConfig.server.certFile),
+      }
+    : undefined
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
+    httpsOptions: httpsOptions,
   })
 
   app

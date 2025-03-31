@@ -18,15 +18,6 @@ interface ILogBinding {
   err?: Error
 }
 
-const PinoLevelToKubernetesSeverityLevels = {
-  trace: 'DEBUG',
-  debug: 'DEBUG',
-  info: 'INFO',
-  warn: 'NOTICE',
-  error: 'ERROR',
-  fatal: 'CRITICAL',
-}
-
 // Help about pino -> https://github.com/pinojs/pino/blob/HEAD/docs/api.md
 @Module({
   imports: [
@@ -35,16 +26,6 @@ const PinoLevelToKubernetesSeverityLevels = {
         autoLogging: false,
         base: undefined,
         level: GlobalConfig.log.level,
-        formatters: {
-          level: (label: string, number: number) => {
-            return {
-              severity: GlobalConfig.environment.isProduction
-                ? PinoLevelToKubernetesSeverityLevels[label] || 'INFO'
-                : undefined,
-              level: GlobalConfig.environment.isProduction ? undefined : number,
-            }
-          },
-        },
         timestamp: !GlobalConfig.environment.isProduction,
         customProps: (request: IncomingMessage) => ({
           correlationId: request.id,
@@ -66,15 +47,13 @@ const PinoLevelToKubernetesSeverityLevels = {
           },
         },
         customAttributeKeys: { req: 'httpRequest', res: 'httpResponse' },
-        transport: GlobalConfig.environment.isProduction
-          ? undefined
-          : {
-              target: 'pino-pretty',
-              options: {
-                singleLine: true,
-                colorize: true,
-              },
-            },
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            singleLine: true,
+            colorize: true,
+          },
+        },
         genReqId: (request: IncomingMessage, response: ServerResponse<IncomingMessage>): ReqId => {
           let id: ReqId = request.id ?? request.headers['x-request-id']
           if (!id) {

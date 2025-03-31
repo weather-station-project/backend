@@ -30,6 +30,7 @@ interface IDatabaseConfig {
   user: string
   password: string
   schema: string
+  healthCheckTimeout: number
 }
 
 export class Config {
@@ -63,6 +64,7 @@ export class Config {
       user: process.env.DATABASE_USER || 'postgres',
       password: process.env.DATABASE_PASSWORD || '123456',
       schema: process.env.DATABASE_SCHEMA,
+      healthCheckTimeout: 10000,
     }
   }
 }

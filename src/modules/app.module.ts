@@ -66,7 +66,7 @@ const PinoLevelToKubernetesSeverityLevels = {
           },
         },
         customAttributeKeys: { req: 'httpRequest', res: 'httpResponse' },
-        transport: !GlobalConfig.environment.isProduction
+        transport: GlobalConfig.environment.isProduction
           ? undefined
           : {
               target: 'pino-pretty',

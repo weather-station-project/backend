@@ -21,6 +21,6 @@ export default tseslint.config({
   },
   extends: [js.configs.recommended, ...tseslint.configs.recommended, eslintConfigPrettier],
   rules: {...eslintConfigPrettier.rules},
-  files: ["src/**/*.ts", "tests/**/*.ts"],
+  files: ["src/**/*.ts", "src/*.ts", "tests/**/*.ts"],
   ignores: ["node_modules/**", ".idea/**"]
 })

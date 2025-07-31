@@ -1,3 +1,4 @@
+import { otelSDK } from './instrumentation'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { AppModule } from './modules/app.module'
 import { ValidationPipe, VERSION_NEUTRAL, VersioningType } from '@nestjs/common'
@@ -20,6 +21,10 @@ async function bootstrap(): Promise<void> {
         cert: fs.readFileSync(GlobalConfig.server.certFile),
       }
     : undefined
+
+  // Start SDK before nestjs factory create
+  otelSDK.start()
+
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
     httpsOptions: httpsOptions,

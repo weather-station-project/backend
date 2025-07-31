@@ -34,8 +34,8 @@ interface IDatabaseConfig {
 }
 
 interface IOtlpConfig {
-  url: string
-  debugTracesInConsole: boolean
+  rootUrl: string
+  debugInConsole: boolean
 }
 
 export class Config {
@@ -73,8 +73,8 @@ export class Config {
       healthCheckTimeout: 10000,
     }
     this.otlp = {
-      url: process.env.OTLP_URL || 'http://localhost:4318/v1/traces',
-      debugTracesInConsole: process.env.OTLP_DEBUG_TRACES_IN_CONSOLE === 'true',
+      rootUrl: process.env.OTLP_ROOT_URL || 'http://localhost:4318',
+      debugInConsole: process.env.OTLP_DEBUG_IN_CONSOLE === 'true',
     }
   }
 }

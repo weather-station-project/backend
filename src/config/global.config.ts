@@ -33,12 +33,18 @@ interface IDatabaseConfig {
   healthCheckTimeout: number
 }
 
+interface IOtlpConfig {
+  url: string
+  debugTracesInConsole: boolean
+}
+
 export class Config {
   environment: IEnvironmentConfig
   server: IServerConfig
   auth: IAuthConfig
   log: ILogConfig
   database: IDatabaseConfig
+  otlp: IOtlpConfig
 
   constructor() {
     this.environment = {
@@ -65,6 +71,10 @@ export class Config {
       password: process.env.DATABASE_PASSWORD || '123456',
       schema: process.env.DATABASE_SCHEMA,
       healthCheckTimeout: 10000,
+    }
+    this.otlp = {
+      url: process.env.OTLP_URL || 'http://localhost:4318/v1/traces',
+      debugTracesInConsole: process.env.OTLP_DEBUG_TRACES_IN_CONSOLE === 'true',
     }
   }
 }

@@ -22,8 +22,8 @@ export const otelSDK = new NodeSDK({
   spanProcessors: getProcessors(),
   metricReader: getMetricReader(),
   resource: resourceFromAttributes({
-    [ATTR_SERVICE_NAME]: 'wsp-backend',
-    [ATTR_SERVICE_VERSION]: '0.0.1',
+    [ATTR_SERVICE_NAME]: GlobalConfig.otlp.attrs.serviceName,
+    [ATTR_SERVICE_VERSION]: GlobalConfig.otlp.attrs.serviceVersion,
   }),
   instrumentations: [new HttpInstrumentation(), new NestInstrumentation()],
 })

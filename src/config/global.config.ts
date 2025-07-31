@@ -36,6 +36,10 @@ interface IDatabaseConfig {
 interface IOtlpConfig {
   rootUrl: string
   debugInConsole: boolean
+  attrs: {
+    serviceName: string
+    serviceVersion: string
+  }
 }
 
 export class Config {
@@ -75,6 +79,10 @@ export class Config {
     this.otlp = {
       rootUrl: process.env.OTLP_ROOT_URL || 'http://localhost:4318',
       debugInConsole: process.env.OTLP_DEBUG_IN_CONSOLE === 'true',
+      attrs: {
+        serviceName: 'wsp-backend',
+        serviceVersion: process.env.SERVICE_VERSION || '0.0.1',
+      },
     }
   }
 }

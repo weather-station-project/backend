@@ -48,7 +48,7 @@ function getTransportTargets() {
         level: GlobalConfig.log.level,
         timestamp: !GlobalConfig.environment.isProduction,
         customProps: (request: IncomingMessage) => ({
-          correlationId: request.id,
+          correlation_id: request.id,
         }),
         hooks: {
           logMethod(args: Parameters<LogFn>, method: LogFn): void {

@@ -79,11 +79,11 @@ export class Config {
     }
     this.otlp = {
       rootUrl: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318',
-      debugInConsole: process.env.OTLP_DEBUG_IN_CONSOLE === 'true',
+      debugInConsole: process.env.OTEL_DEBUG_IN_CONSOLE === 'true',
       attrs: {
         serviceName: 'wsp-backend',
-        serviceVersion: process.env.SERVICE_VERSION || '0.0.1',
-        deploymentEnvironment: process.env.DEPLOYMENT_ENVIRONMENT || 'localhost',
+        serviceVersion: process.env.OTEL_SERVICE_VERSION || '0.0.1',
+        deploymentEnvironment: process.env.OTEL_DEPLOYMENT_ENVIRONMENT || 'localhost',
       },
     }
   }

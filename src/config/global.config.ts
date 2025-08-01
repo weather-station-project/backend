@@ -78,7 +78,7 @@ export class Config {
       healthCheckTimeout: 10000,
     }
     this.otlp = {
-      rootUrl: process.env.OTLP_ROOT_URL || 'http://localhost:4318',
+      rootUrl: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318',
       debugInConsole: process.env.OTLP_DEBUG_IN_CONSOLE === 'true',
       attrs: {
         serviceName: 'wsp-backend',

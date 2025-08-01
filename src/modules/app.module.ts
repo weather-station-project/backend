@@ -8,10 +8,10 @@ import { ReqId } from 'pino-http'
 import { IncomingMessage, ServerResponse } from 'http'
 import pino from 'pino'
 import { RequestIdStorage } from '../utils/requestStorage.util'
-import LogFn = pino.LogFn
 import { AuthModule } from './auth.module'
 import { HealthModule } from './health.module'
 import { MeasurementsModule } from './measurements.module'
+import LogFn = pino.LogFn
 
 interface ILogBinding {
   context: string
@@ -47,13 +47,15 @@ interface ILogBinding {
           },
         },
         customAttributeKeys: { req: 'httpRequest', res: 'httpResponse' },
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            singleLine: true,
-            colorize: true,
-          },
-        },
+        transport: GlobalConfig.otlp.debugInConsole
+          ? {
+              target: 'pino-pretty',
+              options: {
+                singleLine: true,
+                colorize: true,
+              },
+            }
+          : { target: 'pino-opentelemetry-transport' },
         genReqId: (request: IncomingMessage, response: ServerResponse<IncomingMessage>): ReqId => {
           let id: ReqId = request.id ?? request.headers['x-request-id']
           if (!id) {

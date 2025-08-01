@@ -29,20 +29,16 @@ export const otelSDK = new NodeSDK({
 })
 
 function getProcessors(): SpanProcessor[] {
-  const processors: SpanProcessor[] = [
+  return [
     new BatchSpanProcessor(
-      new OTLPTraceExporter({
-        url: `${GlobalConfig.otlp.rootUrl}/v1/traces`,
-        headers: {},
-      })
+      GlobalConfig.otlp.debugInConsole
+        ? new ConsoleSpanExporter()
+        : new OTLPTraceExporter({
+            url: `${GlobalConfig.otlp.rootUrl}/v1/traces`,
+            headers: {},
+          })
     ),
   ]
-
-  if (GlobalConfig.otlp.debugInConsole) {
-    processors.push(new BatchSpanProcessor(new ConsoleSpanExporter()))
-  }
-
-  return processors
 }
 
 function getMetricReader(): IMetricReader {

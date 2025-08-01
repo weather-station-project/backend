@@ -13,6 +13,8 @@ import {
   SemanticResourceAttributes,
 } from '@opentelemetry/semantic-conventions'
 import { resourceFromAttributes } from '@opentelemetry/resources'
+import { HostMetrics } from '@opentelemetry/host-metrics'
+import { metrics } from '@opentelemetry/api'
 
 /*
 Useful links:
@@ -54,6 +56,18 @@ function getMetricReader(): IMetricReader {
           url: `${GlobalConfig.otlp.rootUrl}/v1/metrics`,
         }),
   })
+}
+
+let hostMetricsSDK: HostMetrics | undefined
+export function getHostMetricsSDK(): HostMetrics {
+  if (hostMetricsSDK) {
+    return hostMetricsSDK
+  }
+
+  hostMetricsSDK = new HostMetrics({
+    meterProvider: metrics.getMeterProvider(),
+  })
+  return hostMetricsSDK
 }
 
 function shutdownSDK(): void {

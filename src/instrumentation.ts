@@ -7,7 +7,11 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { GlobalConfig } from './config/global.config'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http'
 import { ConsoleMetricExporter, IMetricReader, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions'
+import {
+  ATTR_SERVICE_NAME,
+  ATTR_SERVICE_VERSION,
+  SemanticResourceAttributes,
+} from '@opentelemetry/semantic-conventions'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 
 /*
@@ -24,6 +28,7 @@ export const otelSDK = new NodeSDK({
   resource: resourceFromAttributes({
     [ATTR_SERVICE_NAME]: GlobalConfig.otlp.attrs.serviceName,
     [ATTR_SERVICE_VERSION]: GlobalConfig.otlp.attrs.serviceVersion,
+    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: GlobalConfig.otlp.attrs.deploymentEnvironment,
   }),
   instrumentations: [new HttpInstrumentation(), new NestInstrumentation()],
 })

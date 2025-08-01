@@ -39,6 +39,7 @@ interface IOtlpConfig {
   attrs: {
     serviceName: string
     serviceVersion: string
+    deploymentEnvironment: string
   }
 }
 
@@ -82,6 +83,7 @@ export class Config {
       attrs: {
         serviceName: 'wsp-backend',
         serviceVersion: process.env.SERVICE_VERSION || '0.0.1',
+        deploymentEnvironment: process.env.DEPLOYMENT_ENVIRONMENT || 'localhost',
       },
     }
   }

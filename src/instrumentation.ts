@@ -51,13 +51,18 @@ function getMetricReader(): IMetricReader {
   })
 }
 
-// gracefully shut down the SDK on process exit
-process.on('SIGTERM', () => {
+function shutdownSDK(): void {
   otelSDK
     .shutdown()
-    .then(
-      () => console.log('SDK shut down successfully'),
-      (err) => console.log('Error shutting down SDK', err)
-    )
-    .finally(() => process.exit(0))
-})
+    .then(() => {
+      console.log('OpenTelemetry SDK shutdown successfully.')
+      process.exit(0)
+    })
+    .catch((error) => {
+      console.error('Error shutting down OpenTelemetry SDK: ', error)
+      process.exit(1)
+    })
+}
+
+process.on('SIGTERM', (): void => shutdownSDK())
+process.on('SIGINT', (): void => shutdownSDK())

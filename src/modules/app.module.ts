@@ -18,27 +18,6 @@ interface ILogBinding {
   err?: Error
 }
 
-function getTransportTargets() {
-  const transports = [
-    {
-      target: 'pino-pretty',
-      options: {
-        singleLine: true,
-        colorize: true,
-      },
-    },
-  ]
-
-  if (GlobalConfig.environment.isProduction) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    transports.push({
-      target: 'pino-opentelemetry-transport',
-    })
-  }
-
-  return transports
-}
 // Help about pino -> https://github.com/pinojs/pino/blob/HEAD/docs/api.md
 @Module({
   imports: [
@@ -68,9 +47,17 @@ function getTransportTargets() {
           },
         },
         customAttributeKeys: { req: 'httpRequest', res: 'httpResponse' },
-        transport: {
-          targets: getTransportTargets(),
-        },
+        transport: GlobalConfig.otlp.debugInConsole
+          ? {
+              target: 'pino-pretty',
+              options: {
+                singleLine: true,
+                colorize: true,
+              },
+            }
+          : {
+              target: 'pino-opentelemetry-transport',
+            },
         genReqId: (request: IncomingMessage, response: ServerResponse<IncomingMessage>): ReqId => {
           let id: ReqId = request.id ?? request.headers['x-request-id']
           if (!id) {

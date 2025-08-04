@@ -30,9 +30,10 @@ function getTransportTargets() {
   ]
 
   if (GlobalConfig.environment.isProduction) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     transports.push({
       target: 'pino-opentelemetry-transport',
-      options: undefined,
     })
   }
 

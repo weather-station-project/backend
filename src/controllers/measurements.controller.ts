@@ -77,7 +77,7 @@ export class MeasurementsController {
     @Body() measurement: AirMeasurementDto,
     @UserDecorator() userFromHeaders: UserDto
   ): Promise<void> {
-    this.logger.log(`Request addAirMeasurement by the user '${userFromHeaders.login}`)
+    this.logger.log(`Request addAirMeasurement by the user '${userFromHeaders.login}'`)
     await this.measurementsService.addAirMeasurement(measurement)
   }
 
@@ -87,7 +87,7 @@ export class MeasurementsController {
     @Body() measurement: GroundTemperatureDto,
     @UserDecorator() userFromHeaders: UserDto
   ): Promise<void> {
-    this.logger.log(`Request addGroundTemperature by the user '${userFromHeaders.login}`)
+    this.logger.log(`Request addGroundTemperature by the user '${userFromHeaders.login}'`)
     await this.measurementsService.addGroundTemperature(measurement)
   }
 
@@ -97,14 +97,14 @@ export class MeasurementsController {
     @Body() measurement: WindMeasurementDto,
     @UserDecorator() userFromHeaders: UserDto
   ): Promise<void> {
-    this.logger.log(`Request addWindMeasurement by the user '${userFromHeaders.login}`)
+    this.logger.log(`Request addWindMeasurement by the user '${userFromHeaders.login}'`)
     await this.measurementsService.addWindMeasurement(measurement)
   }
 
   @Roles(Role.Write)
   @Post('rainfall')
   async addRainfall(@Body() measurement: RainfallDto, @UserDecorator() userFromHeaders: UserDto): Promise<void> {
-    this.logger.log(`Request addRainfall by the user '${userFromHeaders.login}`)
+    this.logger.log(`Request addRainfall by the user '${userFromHeaders.login}'`)
     await this.measurementsService.addRainfall(measurement)
   }
 

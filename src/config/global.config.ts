@@ -33,12 +33,23 @@ interface IDatabaseConfig {
   healthCheckTimeout: number
 }
 
+interface IOtlpConfig {
+  rootUrl: string
+  debugInConsole: boolean
+  attrs: {
+    serviceName: string
+    serviceVersion: string
+    deploymentEnvironment: string
+  }
+}
+
 export class Config {
   environment: IEnvironmentConfig
   server: IServerConfig
   auth: IAuthConfig
   log: ILogConfig
   database: IDatabaseConfig
+  otlp: IOtlpConfig
 
   constructor() {
     this.environment = {
@@ -65,6 +76,15 @@ export class Config {
       password: process.env.DATABASE_PASSWORD || '123456',
       schema: process.env.DATABASE_SCHEMA,
       healthCheckTimeout: 10000,
+    }
+    this.otlp = {
+      rootUrl: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318',
+      debugInConsole: process.env.OTEL_DEBUG_IN_CONSOLE === 'true',
+      attrs: {
+        serviceName: 'wsp-backend',
+        serviceVersion: process.env.OTEL_SERVICE_VERSION || '0.0.1',
+        deploymentEnvironment: process.env.OTEL_DEPLOYMENT_ENVIRONMENT || 'localhost',
+      },
     }
   }
 }

@@ -33,7 +33,7 @@ interface IDatabaseConfig {
   healthCheckTimeout: number
 }
 
-interface IOtlpConfig {
+interface IOtelConfig {
   rootUrl: string
   debugInConsole: boolean
   attrs: {
@@ -49,7 +49,7 @@ export class Config {
   auth: IAuthConfig
   log: ILogConfig
   database: IDatabaseConfig
-  otlp: IOtlpConfig
+  otel: IOtelConfig
 
   constructor() {
     this.environment = {
@@ -77,7 +77,7 @@ export class Config {
       schema: process.env.DATABASE_SCHEMA,
       healthCheckTimeout: 10000,
     }
-    this.otlp = {
+    this.otel = {
       rootUrl: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318',
       debugInConsole: process.env.OTEL_DEBUG_IN_CONSOLE === 'true',
       attrs: {
